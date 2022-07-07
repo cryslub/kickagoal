@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        String     @default(cuid()) @id
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  String?
+}
+
+model User {
+  id            String       @default(cuid()) @id
+  name          String?
+  email         String?   @unique
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  posts         Post[]
+  @@map(name: "users")
+}
+
+model Team {
+  id        String     @default(cuid()) @id
+  name     String
+  logo   String
+  color   String
+  textColor   String
+  members Person[]
+  matches Match[]
+}
+
+model Person {
+  id        String     @default(cuid()) @id
+  name     String
+  photo String
+  team  Team   @relation(fields: [teamId], references: [id])
+  teamId  String
+  clips Clip[]
+}
+
+model Match {
+  id        String     @default(cuid()) @id
+  name     String
+  date    String
+  result  String
+  teams Team[]
+  clips Clip[]
+}
+
+model Clip {
+  id        String     @default(cuid()) @id
+  link     String
+  match Match   @relation(fields: [matchId], references: [id])
+  matchId  String
+  persons Person[]
+}
+
