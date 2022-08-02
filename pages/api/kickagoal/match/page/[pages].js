@@ -5,8 +5,8 @@ const pages=async(req, res)=>{
     const pageNumber = parseInt(pages.toString())
     try{
         const matches = await prisma.match.findMany({
-            skip:3*pageNumber,
-            take:3,
+            skip:2*pageNumber,
+            take:2,
             orderBy:{
               date:'desc'
             },
@@ -18,6 +18,7 @@ const pages=async(req, res)=>{
                 clips:{
                   select:{
                     id:true,
+                    title:true,
                     link:true,
                     persons:true
                   }

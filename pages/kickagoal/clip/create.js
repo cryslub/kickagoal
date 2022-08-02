@@ -6,10 +6,13 @@ import {TextField,Button,Autocomplete} from '@mui/material';
 import { makeAutoObservable } from "mobx"
 
 import Input from '../../../components/input.js'
+import prisma from '../../../lib/prisma.js';
+
 
 class Clip {
 
     link = ""
+    title = ""
     match = {}
     persons = []
 
@@ -20,6 +23,12 @@ class Clip {
     setLink(link){
         this.link = link
     }
+
+    
+    setTitle(title){
+        this.title = title
+    }
+
 
 
 }
@@ -56,6 +65,7 @@ const Draft = (props) =>  {
     try {
         const body = { 
             link:clip.link, 
+            title:clip.title,
             match : {id:clip.match.id},
             persons:clip.persons.map(person=>{return {id:person.id}})
         };
@@ -83,6 +93,7 @@ const Draft = (props) =>  {
   return (
       <div>
         <Input model={clip} field="link" placeholder="Link" setfunction="setLink" />
+        <Input model={clip} field="title" placeholder="Title" setfunction="setTitle" />
 
 
         <Autocomplete

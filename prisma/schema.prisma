@@ -60,6 +60,7 @@ model Match {
 model Clip {
   id        String     @default(cuid()) @id
   link     String
+  title String
   match Match   @relation(fields: [matchId], references: [id])
   matchId  String
   persons Person[]

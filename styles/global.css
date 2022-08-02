@@ -20,8 +20,7 @@ body {
 .player-wrapper {
   position: relative;
   border-radius: 5px;
-  height:288px;
-  width:162px;
+ 
 }
 
 .react-player {
@@ -79,7 +78,7 @@ body {
 .swiper-button-prev{
   height: 100% !important;
   top: 23px !important;
-  left: 0px !important;
+  left: 7px !important;
   width: 40px;
   text-shadow: 1px 1px 2px black;
 }
@@ -87,7 +86,7 @@ body {
 .swiper-button-next{
   height: 100% !important;
   top: 23px !important;
-  right: 0px !important;
+  right: 7px !important;
   width: 40px;
   text-shadow: 1px 1px 2px black;
 }

@@ -20,6 +20,9 @@ import prisma from '../../lib/prisma';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import useMatchGet from "../../components/useMatchGet"
+import TikTok  from "../../components/tiktok";
+import Clip  from "../../components/clip";
+
 
 
 const AllArticles=(props)=>{
@@ -71,7 +74,7 @@ export const getServerSideProps = async ({ req, res }) => {
 //  const clips = await prisma.clip.findMany();
   const matches = await prisma.match.findMany({
       skip:0,
-      take:3,
+      take:2,
       orderBy:{
         date:'desc'
       },
@@ -83,6 +86,7 @@ export const getServerSideProps = async ({ req, res }) => {
           clips:{
             select:{
               id:true,
+              title:true,
               link:true,
               persons:true
             }
@@ -107,6 +111,7 @@ function getBreakpoint(){
 }
 
 export default function Index(props) {
+
 
   if(props.matches == undefined) return null
 
@@ -133,10 +138,7 @@ export default function Index(props) {
           );
     }
     const onEnded = () => {
-      document.exitFullscreen().catch(
-        (err) => 
-        {}
-      );
+   
     }
 
     const onReady = (id)=>{
@@ -170,7 +172,7 @@ export default function Index(props) {
         dataLength={matchList.length}
         next={fetchMoreData}
         hasMore={props.matchCount>matchList.length}
-        loader={<h4>Loading...</h4>}
+        loader={<h4>불러오는중...</h4>}
 
     >
       {
@@ -200,37 +202,15 @@ export default function Index(props) {
           >
 
           {match.clips.map((clip) => (
-            <SwiperSlide style={{width:172}} key={clip.id}>
-              <Box className="player-wrapper" elevation={2} >
-                <ReactPlayer url={clip.link} className="react-player swiper-lazy" width="162px" height="288px"
-                  ref={(p)=>ref(p,clip.id)}
-                  onStart={()=>onStart(clip.id)}
-                  onPlay={()=>onStart(clip.id)}
-                  onEnded={onEnded} 
-                  onPause={onEnded}
-                  config={{
-                    youtube: {
-                      playerVars: { 
-                        showinfo: 0,
-                        fs:0,
-                        modestbranding : 1  }
-                    }
-                  }}/>
-                <AvatarGroup style={{position:'relative',top:238,marginRight:5,marginBottom:-45}}>
-                  {
-                    clip.persons.map((person)=>(
-                      <Avatar key={person.id} alt={person.name} src={"/images/kickagoal/photo/"+person.photo+".png"} />
-                    ))
-                  }
-                </AvatarGroup>
-                </Box>
+            <SwiperSlide style={{width:332}} key={clip.id}>
+                <Clip data={clip}/>
               </SwiperSlide>
           ))}
           </Swiper>
           </Box>
         ))
       }
-    </InfiniteScroll>
+      </InfiniteScroll>
     <Box sx={{height:55}}></Box>
 
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0,zIndex:1 }} elevation={3}>
